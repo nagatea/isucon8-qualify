@@ -2,24 +2,37 @@
 - name: Install MariaDB
   become: yes
   become_user: root
-  yum:
-    pkg: "{{ item }}"
+  apt:
+    name: "{{ item }}"
     state: installed
   with_items:
-    - mariadb
+    - libmariadb-dev
     - mariadb-server
-    - mariadb-devel
-    - MySQL-python
+    - mariadb-client
+    - libmysqlclient-dev
 
 - name: Setup my.cnf
   become: yes
   become_user: root
   blockinfile:
     marker: "# {mark} ANSIBLE MANAGED BLOCK mariadb"
-    dest: /etc/my.cnf
+    dest: /etc/mysql/my.cnf
     content: |
       [mysqld]
       sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+
+- name: Install pip
+  become: yes
+  become_user: root
+  apt:
+    name: python-pip
+    state: installed
+
+- name: Install Mysql-Python
+  become: yes
+  become_user: root
+  pip:
+    name: Mysql-Python
 
 - name: Restart mariadb
   become: yes
@@ -28,6 +41,12 @@
     name: mariadb
     state: restarted
     daemon_reload: yes
+
+- name: MySQL enable root login without sudo
+  become: yes
+  become_user: root
+  shell: |
+    mysql -uroot -Dmysql -e "update user set plugin='' where user='root'; flush privileges;"
 
 - name: Create isucon user on MySQL
   become: yes

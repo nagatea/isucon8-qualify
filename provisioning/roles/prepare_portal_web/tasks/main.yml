@@ -1,13 +1,4 @@
 ---
-- name: firewalld open tcp 80 port
-  become: yes
-  become_user: root
-  firewalld:
-    immediate: true
-    permanent: true
-    service: http
-    state: enabled
-
 - name: Put h2o.conf
   become: yes
   become_user: root

@@ -4,7 +4,7 @@
   become_user: root
   group:
     name: isucon
-    gid: 1001
+    gid: 1005
     state: present
     system: no
 
@@ -13,7 +13,7 @@
   become_user: root
   user:
     name: isucon
-    uid: 1001
+    uid: 1005
     group: isucon
     password: isucon
     home: /home/isucon
@@ -24,61 +24,36 @@
 - name: Add sudoers
   become: yes
   become_user: root
-  copy:
-    content: "isucon  ALL=(ALL) NOPASSWD:ALL\n"
-    dest: /etc/sudoers.d/90-isucon-user
+  lineinfile:
+    line: "isucon  ALL=(ALL) NOPASSWD:ALL"
+    dest: /etc/sudoers
+    state: present
     owner: root
     group: root
     mode: 0440
 
-- name: Install epel-release
-  become: yes
-  become_user: root
-  yum:
-    pkg: "{{ item }}"
-    state: installed
-  with_items:
-    - epel-release
-
-- name: Install Development Tools
-  become: yes
-  become_user: root
-  yum: name="{{ item }}" state=present
-  with_items:
-    - "@Development Tools"
-
 - name: Install packages
   become: yes
   become_user: root
-  yum:
-    pkg: "{{ item }}"
+  apt:
+    name: "{{ item }}"
     state: installed
   with_items:
     - autoconf
     - automake
     - curl
     - dstat
-    - firewalld
-    - gdbm-devel
+    - libgdbm-dev
     - git
     - jq
-    - libffi-devel
-    - libyaml-devel
-    - ncurses-devel
-    - openssl-devel
+    - libffi-dev
+    - libyaml-dev
+    - libncurses5-dev
+    - libssl-dev
     - patch
-    - readline-devel
+    - libreadline-dev
     - sudo
-    - zlib-devel
-
-- name: Restart and enable firewalld
-  become: yes
-  become_user: root
-  systemd:
-    name: firewalld
-    state: restarted
-    daemon_reload: yes
-    enabled: yes
+    - zlib1g-dev
 
 - name: Install xbuild
   become: yes
