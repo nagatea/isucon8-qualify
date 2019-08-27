@@ -2,10 +2,13 @@
   roles:
     - common
     - increase_ulimit
-    - install_h2o
+#    - install_h2o
+    - install_nginx
     - install_mariadb
-    - install_perl
-    - deploy_webapp
-    - deploy_portal
-    - prepare_portal_web
-    - start_portal_web
+    - install_go
+    - install_nodejs
+    # - install_perl
+    # - deploy_webapp
+    # - deploy_portal
+    # - prepare_portal_web
+    # - start_portal_web

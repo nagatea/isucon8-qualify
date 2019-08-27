@@ -8,20 +8,20 @@
     daemon_reload: yes
     enabled: yes
 
-- name: Restart and enable h2o
+- name: Restart and enable nginx
   become: yes
   become_user: root
   systemd:
-    name: h2o
+    name: nginx
     state: restarted
     daemon_reload: yes
     enabled: yes
 
-- name: systemd restart torb.perl
+- name: systemd restart torb.go
   become: yes
   become_user: root
   systemd:
-    name: torb.perl
+    name: torb.go
     state: restarted
     daemon_reload: yes
     enabled: yes

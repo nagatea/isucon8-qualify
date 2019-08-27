@@ -8,7 +8,6 @@
   with_items:
     - libmariadb-dev
     - mariadb-server
-    - mariadb-client
     - libmysqlclient-dev
 
 - name: Setup my.cnf

@@ -22,6 +22,16 @@
   command: |
     /home/isucon/xbuild/ruby-install 2.5.1 /home/isucon/local/ruby
 
+- name: Instell Ruby bundler
+  become: yes
+  become_user: root
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - ruby-bundler
+    - ruby-dev
+
 - name: Add PATH for ruby
   become: yes
   become_user: isucon
